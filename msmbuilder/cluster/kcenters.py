@@ -9,6 +9,7 @@
 
 from __future__ import absolute_import, print_function, division
 import numpy as np
+import mdtraj as md
 from sklearn.utils import check_random_state
 from sklearn.base import ClusterMixin, TransformerMixin
 
@@ -89,7 +90,10 @@ class _KCenters(ClusterMixin, TransformerMixin):
         cluster_ids_ = []
 
         for i in range(self.n_clusters):
-            d = libdistance.dist(X, X[new_center_index], metric=self.metric)
+            if self.metric == 'rmsd':
+                d = md.rmsd(X, X[new_center_index])
+            else:
+                d = libdistance.dist(X, X[new_center_index], metric=self.metric)
             mask = (d < self.distances_)
             self.distances_[mask] = d[mask]
             self.labels_[mask] = i
