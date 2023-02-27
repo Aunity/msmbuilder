@@ -5,6 +5,9 @@ import pickle
 import warnings
 
 import numpy as np
+import sys
+import joblib
+sys.modules['sklearn.externals.joblib'] = joblib
 from sklearn.externals.joblib import load as jl_load
 
 __all__ = ['printoptions', 'verbosedump', 'verboseload', 'dump', 'load']
